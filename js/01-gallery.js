@@ -38,20 +38,21 @@ function imageClick(evt) {
     }
 }
 
+// const instance = basicLightbox.create(`
+//     <img src="${evt.target.dataset.source}" width="800" height="600">
+// `);
+// instance.show();
 
+const images = document.querySelectorAll('img');
+images.forEach(image => {
+  image.addEventListener('click', () => {
+    const instance = basicLightbox.create(`
+      <img src="${image.dataset.source}" width="800" height="600">
+    `);
+    instance.show();
+  });
+});
 
-const instance = basicLightbox.create(`
-    <img src="${evt.target.dataset.source}" width="800" height="600">
-`)
-
-instance.show();
-
-ulRef.addEventListener('keydown', (evt) => {
-    if (evt.code === 'Escape') {
-
-    instance.close();
-    }
-})
 
 function blockStandardAction(evt) {
 
