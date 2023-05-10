@@ -1,50 +1,37 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-console.log(galleryItems);
 
-const ulRef = document.querySelector('.gallery');
-const addGallaryMarkup = createGallaryMarkupList(galleryItems);
-
-function createGallaryMarkupList(items) {
-    return items
-    .map(
-        (item) => `<li class="gallery__item">
-        <a class="gallery__link" href="${item.original}">
-           <img class="gallery__image" src=${item.preview} alt="${item.description}" />
-        </a>
+const galleryItemsMarkup = galleryItems
+	.map(
+		({ preview, original, description }) =>
+			`<li class="gallery__item">
+     <a class="gallery__link" href="${original}">
+     <img
+     class="gallery__image"
+     src="${preview}"
+     data-source="${original}"
+     alt="${description}"
+     />
+     </a>
      </li>`
-    )
-     .join('');
+	)
+	.join("");
+
+const ulRef = document.querySelector(".gallery");
+ulRef.insertAdjacentHTML("beforeend", galleryItemsMarkup);
+
+ulRef.addEventListener("click", imageClick);
+
+function imageClick(event) {
+	event.preventDefault();
+	if (event.target.nodeName !== "IMG") {
+		return;
+	} else {
+		const lightbox = new SimpleLightbox('.gallery a', { captionsData: 'alt', captionDelay: 250});
+
+	}
 }
 
-
-ulRef.innerHTML = addGallaryMarkup;
-
-ulRef.addEventListener('click', imageClick);
-
-function imageClick(evt) {
-
-    blockStandardAction(evt);
-
-    if (evt.target.nodeName !== 'IMG') {
-
-        return;
-    }
-}
-
-const images = document.querySelectorAll('img');
-
-images.forEach(image => {
-  image.addEventListener('click', () => {
-    const lightbox = new SimpleLightbox('.gallery a', { captionsData: 'alt', captionDelay: 250});
-
-});
-});
-
-function blockStandardAction(evt) {
-
-    evt.preventDefault();
-}
 
 

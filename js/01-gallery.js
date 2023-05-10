@@ -1,62 +1,43 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-console.log(galleryItems);
+const galleryItemsMarkup = galleryItems
+	.map(
+		({ preview, original, description }) =>
+			`<li class="gallery__item">
+     <a class="gallery__link" href="${original}">
+     <img
+     class="gallery__image"
+     src="${preview}"
+     data-source="${original}"
+     alt="${description}"
+     />
+     </a>
+     </li>`
+	)
+	.join("");
 
-const ulRef = document.querySelector('.gallery');
-const addGallaryMarkup = createGallaryMarkupList(galleryItems);
+const ulRef = document.querySelector(".gallery");
+ulRef.insertAdjacentHTML("beforeend", galleryItemsMarkup);
 
-function createGallaryMarkupList(items) {
-    return items
-    .map(
-        (item) => `<li class="gallery__item">
-  <a class="gallery__link" href="${item.original}">
-    <img
-      class="gallery__image"
-      src="${item.preview}"
-      data-source="${item.original}"
-      alt="${item.description}"
-    />
-  </a>
-</li>`
-    )
-     .join('');
+ulRef.addEventListener("click", imageClick);
+
+function imageClick(event) {
+	event.preventDefault();
+	if (event.target.nodeName !== "IMG") {
+		return;
+	} else {
+		const instance = basicLightbox.create(`
+    <img src="${event.target.dataset.source}" width="800" height="600"> `);
+		instance.show();
+	}
 }
 
-
-ulRef.innerHTML = addGallaryMarkup;
-
-ulRef.addEventListener('click', imageClick);
-
-function imageClick(evt) {
-
-    blockStandardAction(evt);
-
-    if (evt.target.nodeName !== 'IMG') {
-
-        return;
-    }
-}
-
-// const instance = basicLightbox.create(`
-//     <img src="${evt.target.dataset.source}" width="800" height="600">
-// `);
-// instance.show();
-
-const images = document.querySelectorAll('img');
-images.forEach(image => {
-  image.addEventListener('click', () => {
-    const instance = basicLightbox.create(`
-      <img src="${image.dataset.source}" width="800" height="600">
-    `);
-    instance.show();
-  });
-});
-
-
-function blockStandardAction(evt) {
-
-    evt.preventDefault();
-}
+// document.addEventListener("keydown", event => {
+//     const instanceEsc = basicLightbox.getInstance();
+//     if (event.code === "Escape" && instance.visible()){
+//         instance.close();
+//     }
+// });
 
 
